@@ -1,5 +1,5 @@
 #####  BEGIN Jenkins Base #####
-FROM jenkinsci/jnlp-slave
+FROM jenkins/jnlp-slave
 MAINTAINER Victor Trac <victor@cloudkite.io>
 
 ENV CLOUDSDK_CORE_DISABLE_PROMPTS 1
@@ -19,27 +19,45 @@ RUN curl -O https://bootstrap.pypa.io/get-pip.py \
   && python get-pip.py \
   && pip install awscli --upgrade 
 
+## Install Docker
+RUN apt-get install -y \
+      apt-transport-https \
+      ca-certificates \
+      curl \
+      gnupg2 \
+      software-properties-common \
+    && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
+    && add-apt-repository \
+      "deb [arch=amd64] https://download.docker.com/linux/debian \
+      $(lsb_release -cs) \
+      stable" \
+    && apt-get update \
+    && apt-get -y install docker-ce
+
 ## Install docker-composee
-RUN curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose \
+RUN curl -L https://github.com/docker/compose/releases/download/1.15.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose \
   && chmod +x /usr/local/bin/docker-compose
 
 ## Install helm
 RUN mkdir /tmp/helm                                      \
   && cd /tmp/helm                                        \
-  && curl -s https://storage.googleapis.com/kubernetes-helm/helm-v2.5.0-linux-amd64.tar.gz | tar zxvf - \
+  && curl -s https://storage.googleapis.com/kubernetes-helm/helm-v2.5.1-linux-amd64.tar.gz | tar zxvf - \
   && cp /tmp/helm/linux-amd64/helm /usr/local/bin/helm   \
   && chmod +x /usr/local/bin/helm                        \
   && rm -rf /tmp/helm                                    
 
 ## Install git-crypt
 RUN apt-get install -y make g++ libssl-dev                      \
-  && git clone https://github.com/AGWA/git-crypt.git            \
+  && git clone https://github.com/victortrac/git-crypt.git      \
   && cd git-crypt                                               \
   && make                                                       \
   && make install                                               \
   && cd ..                                                      \
   && rm -rf git-crypt                                           \
   && apt-get remove -y --purge make g++ libssl-dev 
+
+## Install misc utilities
+RUN apt-get install -y dnsutils
 
 ## Clean up 
 RUN apt-get clean -y                                            \
