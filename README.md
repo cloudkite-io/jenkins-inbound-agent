@@ -1,4 +1,6 @@
-## jenkinsci/jnlp-slave plus some things ##
+## jenkins/jnlp-slave plus some things ##
+
+Public docker image available at: gcr.io/cloudkite-public/jenkins-slave
 
 Additions:
 * GCP CLI tools
