@@ -1,0 +1,21 @@
+substitutions:
+  _BUILD_TAG: 2018-02-26
+  _DOCKER_REPO_GCP_PROJECT: cloudkite-public
+
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: 
+  - build
+  - -t
+  - gcr.io/${_DOCKER_REPO_GCP_PROJECT}/$REPO_NAME:latest
+  - -t
+  - gcr.io/${_DOCKER_REPO_GCP_PROJECT}/$REPO_NAME:${_BUILD_TAG}
+  - -t
+  - gcr.io/${_DOCKER_REPO_GCP_PROJECT}/$REPO_NAME:$COMMIT_SHA
+  - .
+
+images: [
+  'gcr.io/${_DOCKER_REPO_GCP_PROJECT}/$REPO_NAME:latest',
+  'gcr.io/${_DOCKER_REPO_GCP_PROJECT}/$REPO_NAME:${_BUILD_TAG}',
+  'gcr.io/${_DOCKER_REPO_GCP_PROJECT}/$REPO_NAME:$COMMIT_SHA',
+]

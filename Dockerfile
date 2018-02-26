@@ -3,6 +3,8 @@ FROM jenkins/jnlp-slave
 MAINTAINER Victor Trac <victor@cloudkite.io>
 
 ENV CLOUDSDK_CORE_DISABLE_PROMPTS 1
+ENV DOCKER_COMPOSE_VERSION 1.19.0
+ENV HELM_VERSION 2.8.1
 ENV PATH /opt/google-cloud-sdk/bin:$PATH
 
 USER root
@@ -35,13 +37,13 @@ RUN apt-get install -y \
     && apt-get -y install docker-ce
 
 ## Install docker-composee
-RUN curl -L https://github.com/docker/compose/releases/download/1.15.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose \
+RUN curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose \
   && chmod +x /usr/local/bin/docker-compose
 
 ## Install helm
 RUN mkdir /tmp/helm                                      \
   && cd /tmp/helm                                        \
-  && curl -s https://storage.googleapis.com/kubernetes-helm/helm-v2.5.1-linux-amd64.tar.gz | tar zxvf - \
+  && curl -s https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz | tar zxvf - \
   && cp /tmp/helm/linux-amd64/helm /usr/local/bin/helm   \
   && chmod +x /usr/local/bin/helm                        \
   && rm -rf /tmp/helm                                    
