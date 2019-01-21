@@ -3,8 +3,9 @@ FROM jenkins/jnlp-slave
 MAINTAINER Victor Trac <victor@cloudkite.io>
 
 ENV CLOUDSDK_CORE_DISABLE_PROMPTS 1
-ENV DOCKER_COMPOSE_VERSION 1.22.0
-ENV HELM_VERSION 2.10.0
+ENV DOCKER_COMPOSE_VERSION 1.23.2
+ENV HELM_VERSION 2.12.2
+ENV YQ_VERSION 2.2.1
 ENV PATH /opt/google-cloud-sdk/bin:$PATH
 
 USER root
@@ -58,10 +59,14 @@ RUN apt-get install -y make g++ libssl-dev                      \
   && rm -rf git-crypt                                           \
   && apt-get remove -y --purge make g++ libssl-dev 
 
-## Install misc utilities
-RUN apt-get install -y dnsutils
+## Install yq
+RUN curl -L https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 > /usr/local/bin/yq && \
+  chmod +x /usr/local/bin/yq
 
-## Clean up 
-RUN apt-get clean -y                                            \
-  && apt-get autoremove -y                                      \
-  && rm -rf /var/lib/apt/lists/*
+## Install misc utilities
+RUN apt-get install -y \
+    dnsutils \
+    maven && \
+  apt-get clean -y && \ 
+  apt-get autoremove -y && \
+  rm -rf /var/lib/apt/lists/*

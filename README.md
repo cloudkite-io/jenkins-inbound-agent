@@ -7,3 +7,4 @@ Additions:
 * AWS CLI
 * kubernetes helm
 * git-crypt
+* [yq](https://github.com/mikefarah/yq)
