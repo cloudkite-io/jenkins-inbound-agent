@@ -13,7 +13,7 @@ USER root
 RUN apt-get update -y                                    \
   && apt-get install -y jq                               \
   && curl https://sdk.cloud.google.com | bash            \
-  && mv ./google-cloud-sdk /opt                          \
+  && mv $HOME/google-cloud-sdk /opt                          \
   && gcloud components install kubectl                   
 ##### END Jenkins Base #####
 
