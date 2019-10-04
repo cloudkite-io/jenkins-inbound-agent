@@ -13,7 +13,7 @@ USER root
 RUN apt-get update -y                                    \
   && apt-get install -y jq                               \
   && curl https://sdk.cloud.google.com | bash            \
-  && mv google-cloud-sdk /opt                            \
+  && mv ./google-cloud-sdk /opt                          \
   && gcloud components install kubectl                   
 ##### END Jenkins Base #####
 
@@ -66,8 +66,8 @@ RUN curl -L https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_l
 ## Install misc utilities
 RUN apt-get install -y \
     dnsutils \
+    tidy \
     maven && \
-    tidy && \
   apt-get clean -y && \ 
   apt-get autoremove -y && \
   rm -rf /var/lib/apt/lists/*
