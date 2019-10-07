@@ -8,4 +8,5 @@ Additions:
 * kubernetes helm
 * git-crypt
 * tidy
+* zip
 * [yq](https://github.com/mikefarah/yq)

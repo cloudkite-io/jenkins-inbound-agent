@@ -1,5 +1,5 @@
 substitutions:
-  _BUILD_TAG: 2019-10-03
+  _BUILD_TAG: 2019-10-07
   _DOCKER_REPO_GCP_PROJECT: cloudkite-public
 
 steps:
