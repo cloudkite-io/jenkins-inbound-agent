@@ -67,6 +67,7 @@ RUN curl -L https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_l
 RUN apt-get install -y \
     dnsutils \
     tidy \
+    zip \
     maven && \
   apt-get clean -y && \ 
   apt-get autoremove -y && \
