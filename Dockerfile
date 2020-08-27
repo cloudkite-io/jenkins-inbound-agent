@@ -1,12 +1,13 @@
 #####  BEGIN Jenkins Base #####
-FROM jenkins/jnlp-slave
+FROM jenkins/inbound-agent
 MAINTAINER Victor Trac <victor@cloudkite.io>
 
 ENV CLOUDSDK_CORE_DISABLE_PROMPTS 1
-ENV DOCKER_COMPOSE_VERSION 1.23.2
-ENV HELM_VERSION 2.12.2
-ENV YQ_VERSION 2.2.1
+ENV DOCKER_COMPOSE_VERSION 1.26.0
+ENV HELM_VERSION 3.3.0
+ENV YQ_VERSION 3.3.2
 ENV PATH /opt/google-cloud-sdk/bin:$PATH
+ENV PACKER_RELEASE 1.6.1
 
 USER root
 
@@ -44,10 +45,10 @@ RUN curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE
 ## Install helm
 RUN mkdir /tmp/helm                                      \
   && cd /tmp/helm                                        \
-  && curl -s https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz | tar zxvf - \
+  && curl -s https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz  | tar zxvf - \
   && cp /tmp/helm/linux-amd64/helm /usr/local/bin/helm   \
   && chmod +x /usr/local/bin/helm                        \
-  && rm -rf /tmp/helm                                    
+  && rm -rf /tmp/helm
 
 ## Install git-crypt
 RUN apt-get install -y make g++ libssl-dev                      \
@@ -63,8 +64,15 @@ RUN apt-get install -y make g++ libssl-dev                      \
 RUN curl -L https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 > /usr/local/bin/yq && \
   chmod +x /usr/local/bin/yq
 
-## Install misc utilities
+## Install packer
+RUN wget https://releases.hashicorp.com/packer/${PACKER_RELEASE}/packer_${PACKER_RELEASE}_linux_amd64.zip \
+  && unzip packer_${PACKER_RELEASE}_linux_amd64.zip \
+  && sudo mv packer /usr/local/bin \
+  && rm -f packer_1.4.4_linux_amd64.zip
+
+# Install misc utilities
 RUN apt-get install -y \
+    sudo \
     dnsutils \
     tidy \
     zip \
