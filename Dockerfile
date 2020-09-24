@@ -1,5 +1,5 @@
 #####  BEGIN Jenkins Base #####
-FROM jenkins/jnlp-slave
+FROM  jenkins/inbound-agent
 MAINTAINER Victor Trac <victor@cloudkite.io>
 
 ENV CLOUDSDK_CORE_DISABLE_PROMPTS 1
@@ -69,7 +69,10 @@ RUN apt-get install -y \
     dnsutils \
     tidy \
     zip \
-    maven && \
-  apt-get clean -y && \ 
+    maven \
+    gcc \
+    g++ \
+    make && \
+  apt-get clean -y && \
   apt-get autoremove -y && \
   rm -rf /var/lib/apt/lists/*
