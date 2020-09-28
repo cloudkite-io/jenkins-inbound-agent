@@ -1,4 +1,4 @@
-## jenkins/jnlp-slave plus some things ##
+## jenkins-inbound-agent plus some things ##
 
 Public docker image available at: gcr.io/cloudkite-public/jenkins-slave
 
@@ -10,3 +10,5 @@ Additions:
 * tidy
 * zip
 * [yq](https://github.com/mikefarah/yq)
+* docker, docker-compose
+* gcc, g++ and make

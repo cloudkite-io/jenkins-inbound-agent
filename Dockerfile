@@ -1,6 +1,6 @@
 #####  BEGIN Jenkins Base #####
 FROM  jenkins/inbound-agent
-MAINTAINER Victor Trac <victor@cloudkite.io>
+LABEL maintainer='Victor Trac <victor@cloudkite.io>'
 
 ENV CLOUDSDK_CORE_DISABLE_PROMPTS 1
 ENV DOCKER_COMPOSE_VERSION 1.26.0
@@ -14,13 +14,13 @@ RUN apt-get update -y                                    \
   && apt-get install -y jq                               \
   && curl https://sdk.cloud.google.com | bash            \
   && mv $HOME/google-cloud-sdk /opt                          \
-  && gcloud components install kubectl                   
+  && gcloud components install kubectl
 ##### END Jenkins Base #####
 
 ## Install aws cli
 RUN curl -O https://bootstrap.pypa.io/get-pip.py \
   && python get-pip.py \
-  && pip install awscli --upgrade 
+  && pip install awscli --upgrade
 
 ## Install Docker
 RUN apt-get install -y \
@@ -57,7 +57,7 @@ RUN apt-get install -y make g++ libssl-dev                      \
   && make install                                               \
   && cd ..                                                      \
   && rm -rf git-crypt                                           \
-  && apt-get remove -y --purge make g++ libssl-dev 
+  && apt-get remove -y --purge make g++ libssl-dev
 
 ## Install yq
 RUN curl -L https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 > /usr/local/bin/yq && \
